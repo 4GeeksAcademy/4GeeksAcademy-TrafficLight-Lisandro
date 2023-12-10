@@ -5,51 +5,104 @@ import React, { useState } from "react";
 
 //create your first component
 const Home = () => {
-	const [color1, setColor1] = useState("btn-danger")
-	const [color2, setColor2] = useState("btn-warning")
-	const [Color3, setColor3] = useState("btn-success")
+	const [color1, setColor1] = useState(true)
+	const [color2, setColor2] = useState(true)
+	const [Color3, setColor3] = useState(true)
 	//Este es el estado inicial
 	//En este caso declaramos 3 estados, ya que hay 3 botones con 3 colores diferentes.
 
 	//Despues pones la funcion que queres que se haga cuando haces click. Se puede poner despues del onClick, 
 	//pero es mejor que quede aca arriba asi se ve mas comodo. Es como que se usa abajo, pero se escribe arriba.
 	function cambiarColor1() {
-		if (color1 === "btn-danger") {
-			setColor1("btn-primary")
-		}
+		setColor1(false)
+		setColor2(true)
+		setColor3(true)
+
 	}
 
 	function cambiarColor2() {
-		if (color2 === "btn-warning") {
-			setColor2("btn-primary")
-		}
+		setColor1(true)
+		setColor2(false)
+		setColor3(true)
 	}
 
 	function cambiarColor3() {
-		if (Color3 === "btn-success") {
-			setColor3("btn-primary")
-		}
+		setColor1(true)
+		setColor2(true)
+		setColor3(false)
 	}
 
-	//Aca debajo en el Return empieza lo que es la parte del HTML, seria la estructura de lo que queres mostrar y el diseño.
+	
+	const ContainerSemaforo = (props) =>{
+		const {children, ...rest}=props
+		return <div 
+		className="bg-secondary d-flex flex-column justify-content-center"
+		{...rest}>		
+		{children}
+		</div>
+	}
+//Children se refiere a los 3 colores.
+	
+	
+	const LightButton = (props) =>{
+		const { bgButton,background,onClick,containerStyle}=props
+		return <div 
+		style={{
+			background:'black',
+			width:100,
+			height:100, 
+			alignSelf:'center',
+			padding:10,
+			...containerStyle,
 
-	//Se hace una concatenacion, despues del boton, pones el estado con el que queres que empiece, 
-	//que lo declaramos arriba, al principio, en los espacios de memoria, con Color1, Color2 y Color3.
+		}} 
+		>
+			<div
+			style={{
+				background:background,
+				width:80,
+				height:80,
+				borderRadius:25}}>
+		<button 
+		className={"btn " } 
+		style={{
+			background:bgButton,
+			height:'100%',
+			width:'100%',
+			borderRadius:50,
+		}}
+		onClick={onClick} 
+		type="button"/>
+		</div>
+		</div> 
+	}
 
 	return (
-		<div className="trafficLight bg-black">
-			<div className="botonRojo">
-			<button className={"btn " + color1} onClick={cambiarColor1} type="button"></button>
-			</div>
-
-			<div className="botonAmarillo">	
-			<button className={"btn " + color2} onClick={cambiarColor2} type="button"></button>
-			</div>
-
-			<div className="botonVerde">	
-			<button className={"btn " + Color3} onClick={cambiarColor3} type="button"></button>
-			</div>			
-		</div>
+		<ContainerSemaforo>
+			<div
+		style={{
+			width:10,
+			height:100,
+			background: '#000',
+			alignSelf:'center'
+		}}/>
+			<LightButton 
+			bgButton='red' 
+			background={color1?'black':'white'}
+			containerStyle={{
+				borderTopLeftRadius:15,
+				borderTopRightRadius:15}} 
+			onClick={cambiarColor1}/>
+			<LightButton bgButton='yellow' background={color2?'black':'white'} onClick={cambiarColor2}/>
+			<LightButton 
+			bgButton='green' 
+			background={Color3?'black':'white'} 
+			containerStyle={{
+				borderBottomLeftRadius:15,
+				borderBottomRightRadius:15}} 
+				onClick={cambiarColor3}/>
+	
+		</ContainerSemaforo>
 	);
 }
 
